@@ -12,6 +12,12 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
         then: function (): void {
+            if (env('VERCEL')) {
+                Route::middleware('api')->group(function (): void {
+                    require __DIR__.'/../routes/api.php';
+                });
+            }
+
             Route::middleware('api')->prefix('api')->group(function (): void {
                 require __DIR__.'/../routes/api.php';
             });
